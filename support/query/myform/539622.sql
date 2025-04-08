@@ -1,0 +1,55 @@
+BEGIN TRANSACTION 
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION WHERE ASSET_NO = '2010.OPLAA.2502.000238'
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION WHERE ASSET_NO = '2010.OPLAA.2502.000239'
+UPDATE AGREEMENT_ASSET_AMORTIZATION SET BILLING_AMOUNT =  1467742, mod_date = GETDATE() ,mod_by = 'MTN_FAUZAN', mod_ip_address = 'MYFORM-539622' WHERE AGREEMENT_NO = '0004069.4.10.03.2025' AND BILLING_NO = 1
+UPDATE AGREEMENT_ASSET_AMORTIZATION SET BILLING_AMOUNT =   2032258, mod_date = GETDATE() ,mod_by = 'MTN_FAUZAN', mod_ip_address = 'MYFORM-539622' WHERE AGREEMENT_NO = '0004069.4.10.03.2025' AND BILLING_NO = 13
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION WHERE ASSET_NO = '2010.OPLAA.2502.000238'
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION WHERE ASSET_NO = '2010.OPLAA.2502.000239'
+
+
+DECLARE @val VARCHAR(50);
+
+DECLARE reff_cursor CURSOR FOR
+SELECT VAL
+FROM (
+    VALUES
+    (null)
+	--,('')
+	--,('')
+	--,('')
+) AS RefNos(VAL);
+
+OPEN reff_cursor;
+FETCH NEXT FROM reff_cursor INTO @val;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    INSERT INTO MTN_DATA_DSF_LOG
+    (   
+        MAINTENANCE_NAME
+        ,REMARK
+        ,TABEL_UTAMA
+        ,REFF_1
+        ,REFF_2
+        ,REFF_3
+        ,CRE_DATE
+        ,CRE_BY
+    )
+    VALUES
+    (   
+        'MTN MyForm 539622'
+        ,'Revisi nilai prorate setelah dilakukan change due date di iFin. Agreement : 0004069/4/10/03/2025 prorate billing ke-1 : 1,467,742 prorate billing ke-13 : 2,032,258'
+        ,'SALE'
+        ,'2010.OPLAA.2502.000238'
+        ,@val
+        ,null
+        ,GETDATE()
+        ,'fauzan'
+    );
+
+    FETCH NEXT FROM reff_cursor INTO @val;
+END
+
+CLOSE reff_cursor;
+DEALLOCATE reff_cursor;
+ROLLBACK TRANSACTION 
