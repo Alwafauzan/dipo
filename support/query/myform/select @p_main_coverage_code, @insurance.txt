@@ -1,0 +1,6 @@
+select @p_main_coverage_code, @insurance_type_code, @unit_amount, @p_region_code, @asset_year, dbo.xfn_get_system_date(), @depre_amount    
+prod
+COMPR	PSGC	277708002.56	REGION2	2024	2025-04-10 00:00:00.000	100.00
+
+qa
+COMPR	BUS	673100000.00	REGION2	2025	2024-11-28 00:00:00.000	100.00
