@@ -1,0 +1,72 @@
+USE IFINOPL
+BEGIN TRANSACTION 
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION
+where AGREEMENT_NO = '0000446.4.10.04.2022'
+
+INSERT INTO dbo.AGREEMENT_ASSET_AMORTIZATION
+(
+	AGREEMENT_NO
+	,BILLING_NO
+	,ASSET_NO
+	,DUE_DATE
+	,BILLING_DATE
+	,BILLING_AMOUNT
+	,DESCRIPTION
+	,INVOICE_NO
+	,GENERATE_CODE
+	,HOLD_BILLING_STATUS
+	,HOLD_DATE
+	,REFF_CODE
+	,REFF_REMARK
+	,REFF_DATE
+	,CRE_DATE
+	,CRE_BY
+	,CRE_IP_ADDRESS
+	,MOD_DATE
+	,MOD_BY
+	,MOD_IP_ADDRESS
+)
+VALUES
+	(N'0000446.4.10.04.2022', 34, N'0000446.4.10.04.2022-1', '2025-02-07', '2025-02-07', 2850000.00,'Billing ke 34 dari Periode 08/01/2025 Sampai dengan 07/02/2025', null, null, null, null, null, null, null, getdate(), 'MTN_FAUZAN', 'MYFORM-509914', getdate(), 'MTN_FAUZAN', 'MYFORM-509914'),
+	(N'0000446.4.10.04.2022', 35, N'0000446.4.10.04.2022-1', '2025-03-07', '2025-03-07', 2850000.00,'Billing ke 35 dari Periode 08/02/2025 Sampai dengan 07/03/2025', null, null, null, null, null, null, null, getdate(), 'MTN_FAUZAN', 'MYFORM-509914', getdate(), 'MTN_FAUZAN', 'MYFORM-509914'),
+	(N'0000446.4.10.04.2022', 36, N'0000446.4.10.04.2022-1', '2025-04-07', '2025-04-07', 2850000.00,'Billing ke 36 dari Periode 08/03/2025 Sampai dengan 07/04/2025', null, null, null, null, null, null, null, getdate(), 'MTN_FAUZAN', 'MYFORM-509914', getdate(), 'MTN_FAUZAN', 'MYFORM-509914')
+
+SELECT * FROM dbo.AGREEMENT_ASSET_AMORTIZATION
+where AGREEMENT_NO = '0000446.4.10.04.2022'
+
+SELECT * FROM dbo.AGREEMENT_INFORMATION
+where AGREEMENT_NO = '0000446.4.10.04.2022'
+
+update dbo.AGREEMENT_INFORMATION 
+set		MATURITY_DATE		= '2025-04-07 00:00:00.000'
+		,mod_date           = GETDATE()
+		,mod_by             = 'MTN_FAUZAN'
+		,mod_ip_address     = 'MYFORM-509914'
+where AGREEMENT_NO = '0000446.4.10.04.2022'
+
+SELECT * FROM dbo.AGREEMENT_INFORMATION
+where AGREEMENT_NO = '0000446.4.10.04.2022'
+
+  INSERT INTO MTN_DATA_DSF_LOG
+  ( -- columns to insert data into
+   MAINTENANCE_NAME
+   ,REMARK
+   ,TABEL_UTAMA
+   ,REFF_1
+   ,REFF_2
+   ,REFF_3
+   ,CRE_DATE
+   ,CRE_BY
+  )
+  VALUES
+  ( -- first row: values for the columns in the list above
+  'MTN MyForm 509914'
+  ,'Mohon bantuannya untuk data maintenance tenor agreement 0000446/4/10/04/2022 yang seharusnya 36 bulan'
+  ,'AGREEMENT_ASSET_AMORTIZATION'
+  ,'0000446/4/10/04/2022'
+  ,null
+  ,null
+  ,GETDATE()
+  ,'fauzan'
+  );
+ROLLBACK TRANSACTION
